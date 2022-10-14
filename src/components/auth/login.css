@@ -1,0 +1,16 @@
+.loginContainer {
+  margin: "0 auto";
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* background-color: rebeccapurple; */
+}
+.inputContainer {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
