@@ -4,3 +4,11 @@
   max-width: 1000px;
   box-sizing: border-box;
 }
+/* Link :focus,
+:hover,
+:visited,
+:link,
+:active {
+  text-decoration: inherit;
+  color: inherit;
+} */
