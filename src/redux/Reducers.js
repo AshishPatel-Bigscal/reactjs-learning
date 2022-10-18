@@ -3,8 +3,8 @@ const initialValuesProducts = {
 }
 const initialValuesUser = {
     userDetail: {
-        id: "ashish@gmail.com",
-        password: "ashishgmail",
+        id: "",
+        password: "",
         cart: []
     },
 }
@@ -14,11 +14,16 @@ export function userReducer(state = initialValuesUser, action) {
     switch (action.type) {
         case "GET_USER_DETAIL":
             return {
-                userDetail: { id: action.payload.id, password: action.payload.password, cart: action.payload.cart }
+                userDetail: { ...state.userDetail, id: action.payload.id, password: action.payload.password }
             }
-        case "ADD_TO_CARD":
+        case "GET_CART_DETAIL":
+            console.log(action.payload, "CARD DETAIL REDUCE")
             return {
-                state: { ...state.userDetail, cart: [...state.cart, action.payload] }
+                userDetail: { ...state.userDetail, cart: action.payload }
+            }
+        case "ADD_TO_CART":
+            return {
+                userDetail: { ...state.userDetail, cart: [...state.userDetail.cart, action.payload] }
             }
         default:
             return state

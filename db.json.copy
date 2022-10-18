@@ -2,20 +2,10 @@
   "users": [
     {
       "id": "ashish@gmail.com",
-      "password": "ashishgmail",
-      "cart": [
-        {
-          "id": 2,
-          "image": "speakerSony.jpg",
-          "type": "Speaker",
-          "brand": "sony",
-          "model": "sr 790Z",
-          "quantity": 1,
-          "price": "30000"
-        }
-      ]
+      "password": "ashishgmail"
     }
   ],
+  "cart": [],
   "products": [
     {
       "id": 1,

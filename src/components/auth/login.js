@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchemaLogin } from "../../util/schema"
 import { Link } from 'react-router-dom';
-import { getUserDetail } from "../../redux/Actions";
+import { getUserDetail, getCartDetail } from "../../redux/Actions";
 import { useDispatch } from 'react-redux';
 
 const Login = () => {
@@ -15,8 +15,7 @@ const Login = () => {
     });
 
     const onSubmit = (data) => {
-        console.log(data.username, data.password)
-        dispatch(getUserDetail(data.username, data.password))
+        dispatch(getUserDetail(data.username, data.password));
     }
 
     return (
@@ -25,12 +24,12 @@ const Login = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className='d-flex-column align-items-center justify-content-center' >
 
                     <h5 className="text-primary text-center font-monospace" >Login to Account</h5>
-                    <input className='m-1 p-1 w-100' type="text" placeholder='Username'
+                    <input className='m-1 p-1 w-100' type="text" value="ashish@gmail.com" placeholder='Username'
                         {...register("username", { required: true, maxLength: 20 })}
                     />
                     <p className='m-1 p-1 text-white'>{errors.username?.message}</p>
 
-                    <input className='m-1 p-1 w-100' type="text" placeholder='password'
+                    <input className='m-1 p-1 w-100' type="text" value="ashishgmail" placeholder='password'
                         {...register("password", { required: true, min: 6, max: 20 })}
                     />
                     <p className='text-white'>{errors.password?.message}</p>

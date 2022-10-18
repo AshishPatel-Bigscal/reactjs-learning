@@ -1,12 +1,21 @@
 import React from 'react'
 import "./header.css"
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { MdPermIdentity, MdOutlineArrowDropDown, MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
+import { clearCart } from '../../redux/Actions';
 
 
 const Header = () => {
-    const userDetail = useSelector(state => state.userReducer.userDetail)
-    const cartDetail = useSelector(state => state.userReducer.cart)
+    const dispatch = useDispatch();
+    let userDetail = useSelector(state => state.userReducer.userDetail)
+    const cartDetail = userDetail.cart
+    const totalItems = cartDetail?.length || 0;
+    const totalPrice = cartDetail.reduce((result, obj) => result + (+obj.price * obj.quantity), 0) || 0;
+
+    // localStorage.setItem("userDetail", JSON.stringify(userDetail));
+    // let ls = localStorage.getItem("userDetail")
+    // ls = JSON.parse(ls);
+    // console.log("LOCAL STORAGE : ", ls)
     return (
         <div className='headerContainer'>
             <div className='d-flex w-100 h-100'>
@@ -21,13 +30,14 @@ const Header = () => {
 
                     </span>
                 </div>
+                <button onClick={() => dispatch(clearCart(userDetail))}> clearCart</button>
                 <div className='headerCartDetail'>
 
-                    {cartDetail?.length > 0
+                    {totalItems > 0
                         ? < MdShoppingCart size={35} />
                         : < MdOutlineShoppingCart size={35} />}
-                    <span>Items : {cartDetail?.length || 0}</span>
-                    <span>Amount : {cartDetail?.reduce((result, item) => result + item, 0) || 0}</span>
+                    <span>Items : {totalItems}</span>
+                    <span>Amount : {totalPrice}</span>
                 </div>
             </div>
         </div>

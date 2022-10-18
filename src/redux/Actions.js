@@ -1,15 +1,17 @@
 import axios from "axios";
 import {
-    GET_USER_DETAIL, REGISTER_USER, BASE_URL_USERS, BASE_URL_PRODUCTS, GET_USER_ERROR, GET_PRODUCTS
+    GET_USER_DETAIL, BASE_URL_USERS, BASE_URL_PRODUCTS, GET_PRODUCTS, ADD_TO_CART, GET_CART_DETAIL, CLEAR_CART
 } from "./Constants";
+import Store from "./Store";
 
 
 export function getUserDetail(id, code) {
+    console.log(id)
     return async (dispatch) => {
         try {
             let response = await axios.get(`${BASE_URL_USERS}/${id}`)
             response = await response.data
-            if (response.password == code) {
+            if (response.password === code) {
                 dispatch({ type: GET_USER_DETAIL, payload: response })
             } else {
                 alert("Wrong Password")
@@ -20,11 +22,23 @@ export function getUserDetail(id, code) {
     }
 }
 
+export function getCartDetail(userId) {
+    return async (dispatch) => {
+        try {
+            let response = await axios.get(`${BASE_URL_USERS}/cart`)
+            response = await response.data
+            console.log(response)
+            dispatch({ type: GET_CART_DETAIL, payload: response })
+        } catch (err) {
+            alert("User id not registered.")
+        }
+    }
+}
 
 export function registerUser(email, password) {
     return async () => {
         try {
-            await axios.post(BASE_URL_USERS, { "id": email, "password": password, "cart": [] })
+            await axios.post(BASE_URL_USERS, { "id": email, "password": password })
             alert("Registration successfull.")
         } catch (err) {
             // dispatch({ type: 'REGISTER_USER_FAIL' })
@@ -47,12 +61,34 @@ export function getProducts() {
     }
 }
 
+// export function addToCart(userId, product) {
+//     let newProduct = { "userId": userId, ...product }
+//     return async (dispatch) => {
+//         let finalQuery = `${BASE_URL_USERS}/${userId}/cart`
+//         await axios.post(finalQuery, newProduct)
+//         dispatch({ type: ADD_TO_CART, payload: newProduct })
+//     }
+// }
+
 export function addToCart(userId, product) {
-    let newProduct = { "cart": [{ ...product }] }
+
+    const store = Store.getState();
+    const prevCart = store.userReducer.userDetail.cart;
+
     return async (dispatch) => {
-        let finalQuery = `${BASE_URL_USERS}/q=${userId.cart}`
-        console.log(finalQuery);
-        let response = await axios.post(finalQuery, newProduct)
-        response = await response.data
+
+        let newCart = { "cart": [...prevCart, { ...product }] }
+
+        let finalQuery = `${BASE_URL_USERS}/${userId}`
+        await axios.patch(finalQuery, newCart)
+        dispatch({ type: ADD_TO_CART, payload: product })
     }
 }
+
+export function clearCart(userDetail) {
+    // return async (dispatch) => {
+    //     await axios.delete(BASE_URL_CART + `/1`)
+    //     // dispatch({ type: CLEAR_CART })
+    // }
+}
+
